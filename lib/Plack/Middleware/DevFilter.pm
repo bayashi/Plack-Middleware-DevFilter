@@ -132,6 +132,39 @@ When PLACK_ENV is development, value '#ffffff' becames '#ffffcc' in C</style.css
     };
 
 
+=head1 OPTION PARAMETERS
+
+=over 4
+
+=item force_enable
+
+This is the optional parameter.
+
+If this parameter set true value, filters are forcedly enabled to excute them.(default: false)
+
+=item filters
+
+The C<filters> parameter requires hash that contains 2 keys( C<match> / C<proc> ) and values. And both values should be code reference.
+
+=item image_type
+
+This is the optional parameter.
+
+This option should be code reference. And let get back the type string of C<Imager>.
+
+=back
+
+
+=head1 METHODS
+
+=over 4
+
+=item prepare_app
+
+=item call
+
+=back
+
 =head1 REPOSITORY
 
 Plack::Middleware::DevFilter is hosted on github
