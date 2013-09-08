@@ -115,9 +115,9 @@ Plack::Middleware::DevFilter - filter a content for detecting environment
 
 Plack::Middleware::DevFilter is the filter a content for detecting environment.
 
-On SYNOPSIS code is a example for filtering C<favicon.ico>.
+On SYNOPSIS code is an example for filtering C<favicon.ico>.
 
-The below code is a example for filtering C<style.css>.
+The below code is an example for filtering C<style.css>.
 
 When PLACK_ENV is development, value '#ffffff' becames '#ffffcc' in C</style.css>.
 
@@ -141,6 +141,8 @@ When PLACK_ENV is development, value '#ffffff' becames '#ffffcc' in C</style.css
             ],
         ;
     };
+
+See also: C<example/app.psgi> dir.
 
 
 =head1 OPTION PARAMETERS
