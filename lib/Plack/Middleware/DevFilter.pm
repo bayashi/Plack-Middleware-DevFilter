@@ -69,7 +69,7 @@ __END__
 
 =head1 NAME
 
-Plack::Middleware::DevFilter - one line description
+Plack::Middleware::DevFilter - filter a content for detecting environment
 
 
 =head1 SYNOPSIS
@@ -102,7 +102,34 @@ Plack::Middleware::DevFilter - one line description
 
 =head1 DESCRIPTION
 
-Plack::Middleware::DevFilter is
+Plack::Middleware::DevFilter is the filter a content for detecting environment.
+
+On SYNOPSIS code is a example for filtering C<favicon.ico>.
+
+The below code is a example for filtering C<style.css>.
+
+When PLACK_ENV is development, value '#ffffff' becames '#ffffcc' in C</style.css>.
+
+    use Plack::Builder;
+
+    builder {
+        enable 'DevFilter',
+            filters => [
+                {
+                    match => sub {
+                        my ($self, $env, $res) = @_;
+                        return 1 if $env->{PATH_INFO} eq '/style.css';
+                    },
+                    proc  => sub {
+                        my ($self, $env, $res,
+                                $body_ref, $imager, $image_type) = @_;
+                        $$body_ref =~ s/#ffffff/#ffffcc/g;
+                        $res->[2] = [$$body_ref];
+                    },
+                },
+            ],
+        ;
+    };
 
 
 =head1 REPOSITORY

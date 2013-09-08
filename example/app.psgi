@@ -34,11 +34,23 @@ builder {
                     $res->[2] = [$$body_ref];
                 },
             },
+            {
+                match => sub {
+                    my ($self, $env, $res) = @_;
+                    return 1 if $env->{PATH_INFO} eq '/style.css';
+                },
+                proc  => sub {
+                    my ($self, $env, $res,
+                            $body_ref, $imager, $image_type) = @_;
+                    $$body_ref =~ s/#ffffff/#ffffcc/g;
+                    $res->[2] = [$$body_ref];
+                },
+            },
         ],
     ;
 
     enable 'Static',
-        path => qr{/favicon\.ico$},
+        path => qr{\.(?:ico|css|png|gif|jpeg)$},
         root => 'share',
     ;
 
