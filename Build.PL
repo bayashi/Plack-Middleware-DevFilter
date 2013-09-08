@@ -17,6 +17,10 @@ my $builder = Module::Build->new(
     requires => {
         'perl' => '5.008001',
         'Carp' => 0,
+        'Plack::Middleware' => 0,
+        'Plack::Util::Accessor' => 0,
+        'Plack::Util' => 0,
+        'Imager' => 0,
     },
     add_to_cleanup      => [ 'Plack-Middleware-DevFilter-*' ],
     meta_merge     => {
