@@ -31,10 +31,7 @@ sub call {
 
     my $res = $self->app->($env);
 
-    if ( !$self->force_enable
-            && (!$ENV{PLACK_ENV} || $ENV{PLACK_ENV} !~ m!^(?:development|test)$!) ) {
-        return $res;
-    }
+    return $res if $self->_no_filter;
 
     my $body = '';
     Plack::Util::foreach($res->[2], sub {
@@ -44,11 +41,7 @@ sub call {
 
     my ($imager, $image_type);
     if ( $image_type = $self->image_type->($env, $res) ) {
-        require Imager;
-        $imager = Imager->new(
-            data => $body,
-            type => $image_type,
-        ) or croak Imager->errstr;
+        $imager = $self->_imager_obj(\$body, $image_type);
     }
 
     my $filtered = 0;
@@ -61,6 +54,24 @@ sub call {
     }
 
     return $filtered ? $res : [ $res->[0], $res->[1], [$body] ];
+}
+
+sub _no_filter {
+    my $self = shift;
+
+    return !$self->force_enable
+                && ( ! $ENV{PLACK_ENV}
+                            || $ENV{PLACK_ENV} !~ m!^(?:development|test)$! )
+}
+
+sub _imager_obj {
+    my ($self, $body_ref, $image_type) = @_;
+
+    require Imager;
+    return Imager->new(
+        data => $$body_ref,
+        type => $image_type,
+    ) or croak Imager->errstr;
 }
 
 1;
